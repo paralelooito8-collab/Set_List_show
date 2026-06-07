@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SET LIST - Introdução</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>SET LIST</h1>
+    <p class="subtitle">Introdução</p>
+  </header>
+
+  <div class="container">
+    <div class="flags-grid" id="flagsGrid"></div>
+  </div>
+
+  <!-- Overlay para expandir flag -->
+  <div class="overlay" id="overlay">
+    <div class="flag-content">
+      <h2 id="modalTitle"></h2>
+      <p id="modalText"></p>
+      <div class="nav-buttons">
+        <button id="prevBtn" onclick="previousFlag()">← Anterior</button>
+        <span class="flag-counter">
+          <span id="flagCounter"></span>
+        </span>
+        <button id="nextBtn" onclick="nextFlag()">Próximo →</button>
+        <button class="close-btn" onclick="closeFlag()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const flags = [
+      {
+        title: "À Sua Maneira",
+        text: `Ela dormiu
+No calor dos meus braços, hum
+E eu acordei sem saber se era um sonho
+Algum tempo atrás
+Pensei em te dizer
+Que eu nunca caí nas suas armadilhas de amor
+
+Naquele amor
+À sua maneira
+Perdendo o meu tempo
+A noite inteira
+
+Não mandarei
+Cinzas de rosas
+Nem penso em contar
+Os nossos segredos
+
+Naquele amor
+À sua maneira
+Perdendo o meu tempo
+A noite inteira
+
+Ela dormiu
+No calor dos meus braços
+E eu acordei sem saber se era um sonho
+Algum tempo atrás
+Pensei em te dizer
+Que eu nunca caí nas suas armadilhas de amor
+
+Naquele amor
+À sua maneira
+Perdendo o meu tempo
+A noite inteira
+
+Naquele amor
+À sua maneira
+Perdendo o meu tempo
+A noite inteira
+
+A noite inteira
+A noite inteira
+A noite inteira
+A noite inteira
+
+Ela dormiu
+No calor dos meus braços`
+      },
+      {
+        title: "Primeiros Erros",
+        text: `Meu caminho é cada manhã
+Não procure saber onde vou
+Meu destino não é de ninguém
+E eu não deixo os meus passos no chão
+
+Se você não entende, não vê
+Se não me vê, não entende
+Não procure saber onde estou
+Se o meu jeito te surpreende
+
+Se o meu corpo virasse Sol
+Minha mente virasse Sol
+Mas só chove, chove
+Chove, chove
+
+Se um dia eu pudesse ver
+Meu passado inteiro
+E fizesse parar de chover
+Nos primeiros erros, oh
+
+Meu corpo viraria Sol
+Minha mente viraria
+Mas só chove, chove
+Chove, chove
+
+Se um dia eu pudesse ver
+Meu passado inteiro
+E fizesse parar de chover
+Nos primeiros erros, oh
+
+Meu corpo viraria Sol
+Minha mente viraria
+Mas só chove, chove
+Chove, chove
+
+Meu corpo viraria Sol
+Minha mente viraria
+Mas só chove, chove
+Chove, chove
+
+Se um dia eu pudesse ver
+Meu passado inteiro
+E fizesse parar de chover
+Nos primeiros erros, oh
+
+Meu corpo viraria Sol
+Minha mente viraria
+Mas só chove, chove
+Chove, chove`
+      },
+      {
+        title: "Fátima",
+        text: `Vocês esperam uma intervenção divina
+Mas não sabem que o tempo agora está contra vocês
+Vocês se perdem no meio de tanto medo
+De não conseguir dinheiro pra comprar sem se vender
+
+E vocês armam seus esquemas ilusórios
+Continuam só fingindo que o mundo ninguém fez
+Mas acontece que tudo tem começo
+E se começa um dia acaba, eu tenho pena de vocês
+
+E as ameaças de ataque nuclear
+Bombas de nêutrons não foi Deus quem fez
+Alguém, alguém um dia vai se vingar
+Vocês são vermes, pensam que são reis
+
+Não quero ser como vocês
+Eu não preciso mais
+Eu já sei o que eu tenho que saber
+E agora tanto faz
+
+Três crianças sem dinheiro e sem moral
+Não ouviram a voz suave que era uma lágrima
+E se esqueceram de avisar pra todo mundo
+Ela talvez tivesse nome e era Fátima
+
+E de repente o vinho virou água
+E a ferida não cicatrizou
+E o limpo se sujou e no terceiro dia
+Ninguém ressuscitou`
+      },
+      {
+        title: "Razões e emoções",
+        text: `Dizer
+O que eu posso dizer?
+Se estou cantando agora pra você
+Ouvir com outra pessoa
+
+É que às vezes acho que não sou o melhor pra você
+Mas às vezes acho que poderíamos ser
+O melhor pra nós dois
+Só quero que saiba
+
+Entre razões e emoções, a saída
+É fazer valer a pena
+Se não agora, depois, não importa
+Por você posso esperar
+
+Sentir
+O que posso sentir?
+Se em um segundo tudo acabar
+Não vou ter como fugir
+
+É que às vezes acho que não sou o melhor pra você
+Mas às vezes acho que poderíamos ser
+O melhor pra nós dois
+Só quero que saiba
+
+Entre razões e emoções, a saída
+É fazer valer a pena
+Se não agora, depois, não importa
+Por você posso esperar
+Posso esperar
+
+Entre razões e emoções, a saída
+É fazer valer a pena
+Se não agora, depois, não importa
+Por você posso esperar
+
+(Isso vai passar) entre razões e emoções, a saída
+(Tudo vai melhorar) é fazer valer a pena
+(Isso vai passar) se não agora, depois, não importa
+(Tudo vai melhorar) por você posso esperar
+
+Posso esperar
+Posso esperar
+Posso esperar`
+      },
+      {
+        title: "Come as you are",
+        text: `Come as you are, as you were
+As I want you to be
+As a friend, as a friend
+As an old enemy
+
+Take your time, hurry up
+Choice is yours, don't be late
+Take a rest, as a friend
+As an old memory, yeah
+
+Memory, yeah
+Memory, yeah
+Memory, yeah
+
+Come doused in mud, soaked in bleach
+As I want you to be
+As a trend, as a friend
+As an old memory, yeah
+
+Memory, yeah
+Memory, yeah
+Memory, yeah
+
+And I swear that I don't have a gun
+No, I don't have a gun
+No, I don't have a gun
+
+Memory, yeah
+Memory, yeah
+Memory, yeah
+(No, I don't have a gun)
+
+And I swear that I don't have a gun
+No, I don't have a gun
+No, I don't have a gun
+No, I don't have a gun
+No, I don't have a gun
+
+Memory, yeah
+Memory, yeah`
+      },
+    ];
+
+    let currentFlagIndex = 0;
+
+    function renderFlags() {
+      const flagsGrid = document.getElementById('flagsGrid');
+      flagsGrid.innerHTML = '';
+      flags.forEach((flag, index) => {
+        const card = document.createElement('div');
+        card.className = 'flag-card';
+        card.innerHTML = `<h3>${flag.title}</h3><p>${flag.text.substring(0, 100)}...</p>`;
+        card.onclick = () => openFlag(index);
+        flagsGrid.appendChild(card);
+      });
+    }
+
+    function openFlag(index) {
+      currentFlagIndex = index;
+      const flag = flags[index];
+      document.getElementById('modalTitle').textContent = flag.title;
+      document.getElementById('modalText').textContent = flag.text;
+      document.getElementById('flagCounter').textContent = `${index + 1} de ${flags.length}`;
+      document.getElementById('overlay').classList.add('active');
+      updateButtonStates();
+    }
+
+    function closeFlag() {
+      document.getElementById('overlay').classList.remove('active');
+    }
+
+    function nextFlag() {
+      if (currentFlagIndex < flags.length - 1) {
+        openFlag(currentFlagIndex + 1);
+      }
+    }
+
+    function previousFlag() {
+      if (currentFlagIndex > 0) {
+        openFlag(currentFlagIndex - 1);
+      }
+    }
+
+    function updateButtonStates() {
+      document.getElementById('prevBtn').disabled = currentFlagIndex === 0;
+      document.getElementById('nextBtn').disabled = currentFlagIndex === flags.length - 1;
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('overlay').classList.contains('active')) {
+        if (e.key === 'ArrowRight') nextFlag();
+        if (e.key === 'ArrowLeft') previousFlag();
+        if (e.key === 'Escape') closeFlag();
+      }
+    });
+
+    // Initialize
+    renderFlags();
+  </script>
+</body>
+</html>
