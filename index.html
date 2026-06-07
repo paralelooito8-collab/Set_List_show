@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SET LIST - Introdução</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 900;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      background: linear-gradient(45deg, #00d4ff, #0099ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #aaa;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .flags-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px 0;
+    }
+
+    .flag-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      border-radius: 12px;
+      padding: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .flag-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(0, 212, 255, 0.8);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+    }
+
+    .flag-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #00d4ff;
+    }
+
+    .flag-card p {
+      font-size: 0.9rem;
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    /* Modal Overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      animation: fadeIn 0.3s ease;
+      overflow-y: auto;
+      padding: 0;
+    }
+
+    .overlay.active {
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .flag-content {
+      background: rgba(26, 26, 46, 0.95);
+      border: none;
+      border-radius: 0;
+      padding: 50px;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .flag-content h2 {
+      font-size: 3rem;
+      color: #00d4ff;
+      margin-bottom: 40px;
+      border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+      padding-bottom: 20px;
+    }
+
+    .flag-content p {
+      font-size: 1.3rem;
+      line-height: 2;
+      color: #e0e0e0;
+      margin-bottom: 30px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      column-count: 2;
+      column-gap: 40px;
+      column-rule: 1px solid rgba(0, 212, 255, 0.2);
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 2px solid rgba(0, 212, 255, 0.3);
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: linear-gradient(45deg, #00d4ff, #0099ff);
+      color: #000;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .close-btn {
+      background: rgba(255, 100, 100, 0.8);
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 100, 100, 1);
+    }
+
+    .flag-counter {
+      color: #aaa;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      flex: 1;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+        letter-spacing: 3px;
+      }
+
+      .flag-content {
+        padding: 30px;
+      }
+
+      .flag-content h2 {
+        font-size: 1.8rem;
+      }
+
+      .flag-content p {
+        font-size: 1rem;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SET LIST</h1>
+    <p class="subtitle">Introdução</p>
+  </header>
+
+  <div class="container">
+    <div class="flags-grid" id="flagsGrid"></div>
+  </div>
+
+  <!-- Overlay para expandir flag -->
+  <div class="overlay" id="overlay">
+    <div class="flag-content">
+      <h2 id="modalTitle"></h2>
+      <p id="modalText"></p>
+      <div class="nav-buttons">
+        <button id="prevBtn" onclick="previousFlag()">← Anterior</button>
+        <span class="flag-counter">
+          <span id="flagCounter"></span>
+        </span>
+        <button id="nextBtn" onclick="nextFlag()">Próximo →</button>
+        <button class="close-btn" onclick="closeFlag()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const flags = [
+      {
+        title: "À Sua Maneira",
+        text: `Ela dormiu
+No calor dos meus braços, hum
+E eu acordei sem saber se era um sonho
+Algum tempo atrás
+Pensei em te dizer
+Que eu nunca caí nas suas armadilhas de amor
+
+Naquele amor
+À sua maneira
+Perdendo o meu tempo
+A noite inteira
+
+Não mandarei
+Cinzas de rosas
+Nem penso em contar
+Os nossos segredos
+
+Naquele amor
+À sua maneira
+Perdendo o meu tempo
+A noite inteira
+
+Ela dormiu
+No calor dos meus braços
+E eu acordei sem saber se era um sonho
+Algum tempo atrás
+Pensei em te dizer
+Que eu nunca caí nas suas armadilhas de amor
+
+Naquele amor
+À sua maneira
+Perdendo o meu tempo
+A noite inteira
+
+Naquele amor
+À sua maneira
+Perdendo o meu tempo
+A noite inteira
+
+A noite inteira
+A noite inteira
+A noite inteira
+A noite inteira
+
+Ela dormiu
+No calor dos meus braços`
+      },
+      {
+        title: "Primeiros Erros",
+        text: `Meu caminho é cada manhã
+Não procure saber onde vou
+Meu destino não é de ninguém
+E eu não deixo os meus passos no chão
+
+Se você não entende, não vê
+Se não me vê, não entende
+Não procure saber onde estou
+Se o meu jeito te surpreende
+
+Se o meu corpo virasse Sol
+Minha mente virasse Sol
+Mas só chove, chove
+Chove, chove
+
+Se um dia eu pudesse ver
+Meu passado inteiro
+E fizesse parar de chover
+Nos primeiros erros, oh
+
+Meu corpo viraria Sol
+Minha mente viraria
+Mas só chove, chove
+Chove, chove
+
+Se um dia eu pudesse ver
+Meu passado inteiro
+E fizesse parar de chover
+Nos primeiros erros, oh
+
+Meu corpo viraria Sol
+Minha mente viraria
+Mas só chove, chove
+Chove, chove
+
+Meu corpo viraria Sol
+Minha mente viraria
+Mas só chove, chove
+Chove, chove
+
+Meu corpo viraria Sol
+Minha mente viraria
+Mas só chove, chove
+Chove, chove
+
+Se um dia eu pudesse ver
+Meu passado inteiro
+E fizesse parar de chover
+Nos primeiros erros, oh
+
+Meu corpo viraria Sol
+Minha mente viraria
+Mas só chove, chove
+Chove, chove`
+      },
+      {
+        title: "Fátima",
+        text: `Vocês esperam uma intervenção divina
+Mas não sabem que o tempo agora está contra vocês
+Vocês se perdem no meio de tanto medo
+De não conseguir dinheiro pra comprar sem se vender
+
+E vocês armam seus esquemas ilusórios
+Continuam só fingindo que o mundo ninguém fez
+Mas acontece que tudo tem começo
+E se começa um dia acaba, eu tenho pena de vocês
+
+E as ameaças de ataque nuclear
+Bombas de nêutrons não foi Deus quem fez
+Alguém, alguém um dia vai se vingar
+Vocês são vermes, pensam que são reis
+
+Não quero ser como vocês
+Eu não preciso mais
+Eu já sei o que eu tenho que saber
+E agora tanto faz
+
+Três crianças sem dinheiro e sem moral
+Não ouviram a voz suave que era uma lágrima
+E se esqueceram de avisar pra todo mundo
+Ela talvez tivesse nome e era Fátima
+
+E de repente o vinho virou água
+E a ferida não cicatrizou
+E o limpo se sujou e no terceiro dia
+Ninguém ressuscitou`
+      },
+      {
+        title: "Razões e emoções",
+        text: `Dizer
+O que eu posso dizer?
+Se estou cantando agora pra você
+Ouvir com outra pessoa
+
+É que às vezes acho que não sou o melhor pra você
+Mas às vezes acho que poderíamos ser
+O melhor pra nós dois
+Só quero que saiba
+
+Entre razões e emoções, a saída
+É fazer valer a pena
+Se não agora, depois, não importa
+Por você posso esperar
+
+Sentir
+O que posso sentir?
+Se em um segundo tudo acabar
+Não vou ter como fugir
+
+É que às vezes acho que não sou o melhor pra você
+Mas às vezes acho que poderíamos ser
+O melhor pra nós dois
+Só quero que saiba
+
+Entre razões e emoções, a saída
+É fazer valer a pena
+Se não agora, depois, não importa
+Por você posso esperar
+Posso esperar
+
+Entre razões e emoções, a saída
+É fazer valer a pena
+Se não agora, depois, não importa
+Por você posso esperar
+
+(Isso vai passar) entre razões e emoções, a saída
+(Tudo vai melhorar) é fazer valer a pena
+(Isso vai passar) se não agora, depois, não importa
+(Tudo vai melhorar) por você posso esperar
+
+Posso esperar
+Posso esperar
+Posso esperar`
+      },
+      {
+        title: "Come as you are",
+        text: `Come as you are, as you were
+As I want you to be
+As a friend, as a friend
+As an old enemy
+
+Take your time, hurry up
+Choice is yours, don't be late
+Take a rest, as a friend
+As an old memory, yeah
+
+Memory, yeah
+Memory, yeah
+Memory, yeah
+
+Come doused in mud, soaked in bleach
+As I want you to be
+As a trend, as a friend
+As an old memory, yeah
+
+Memory, yeah
+Memory, yeah
+Memory, yeah
+
+And I swear that I don't have a gun
+No, I don't have a gun
+No, I don't have a gun
+
+Memory, yeah
+Memory, yeah
+Memory, yeah
+(No, I don't have a gun)
+
+And I swear that I don't have a gun
+No, I don't have a gun
+No, I don't have a gun
+No, I don't have a gun
+No, I don't have a gun
+
+Memory, yeah
+Memory, yeah`
+      },
+      {
+        title: "Romeu e Lulieta",
+        text: `2x letra
+        Nunca pensei em encontrar alguém assim
+Minha metade…
+É o que faltava em mim…
+Ela tem na outra parte!
+
+Dias de sol ou noites de chuva!
+Quero estar ao seu ladooo!
+Que maravilha vestida ou nua
+Minha metadeeee…
+
+Somos Romeu e Julieta com queijo e goiabada
+Dois gatos no telhado, em plena madrugada
+Seu cabelos em meus dedos minha eterna Rapunzel
+Me enforco em tuas pernas me embriago no teu mel
+
+Nossa cama incendeia como as chamas de Pompeia!
+Como as MOIRAS do destino tem minha vida em suas
+Mãos..
+
+Eu no paraíso me torno…
+
+Seu esterno guardião…`
+      },
+      {
+        title: "Like a Stone",
+        text: `On a cobweb afternoon
+In a room full of emptiness
+By a freeway, I confess
+I was lost in the pages
+Of a book full of death
+Reading how we'll die alone
+And if we're good, we'll lay to rest
+Anywhere we wanna go
+
+In your house
+I long to be
+Room by room
+Patiently
+I'll wait for you there
+Like a stone
+I'll wait for you there
+Alone
+
+And on my deathbed, I will pray
+To the gods and the angels
+Like a pagan, to anyone
+Who will take me to heaven
+To a place I recall
+I was there so long ago
+The sky was bruised, the wine was bled
+And there you led me on
+
+In your house
+I long to be
+Room by room
+Patiently
+I'll wait for you there
+Like a stone
+I'll wait for you there
+Alone
+Alone
+
+And on I read
+Until the day was gone
+And I sat in regret
+Of all the things I've done
+For all that I've blessed
+And all that I've wronged
+In dreams until my death
+I will wonder on
+
+In your house
+I long to be
+Room by room
+Patiently
+I'll wait for you there
+Like a stone
+I'll wait for you there
+Alone
+Alone`
+      },
+      {
+        title: "Zombie",
+        text: `Another head hangs lowly
+Child is slowly taken
+And the violence caused such silence
+Who are we, mistaken?
+
+But you see, it's not me, it's not my family
+In your head, in your head, they are fighting
+With their tanks, and their bombs, and their bombs, and their guns
+In your head, in your head, they are crying
+
+In your head, in your head
+Zombie, zombie, zombie-ie-ie
+What's in your head, in your head?
+Zombie, zombie, zombie-ie-ie-ie, oh
+
+Doo, doo, doo-doo-doo
+Doo, doo, doo-doo-doo
+Doo, doo, doo-doo-doo
+Doo, doo, doo-doo-doo
+
+Another mother's breaking
+Heart is taking over
+When the violence causes silence
+We must be mistaken
+
+It's the same old theme, since 1916
+In your head, in your head, they're still fighting
+With their tanks, and their bombs, and their bombs, and their guns
+In your head, in your head, they are dying
+
+In your head, in your head
+Zombie, zombie, zombie-ie-ie
+What's in your head, in your head?
+Zombie, zombie, zombie-ie-ie-ie, oh
+Oh-oh-oh-oh-oh-oh-eh-eh-oh, ya-ya`
+      },
+      {
+        title: "Apegar",
+        text: `Eu falo sério mas tão certo assim tbm não dá
+palavras duras que ninguém consegue escutar
+mais eu escuto e me acostumo a me calar
+quem sabe o silêncio comece a concordar
+
+quem nunca sentiu medo tristeza ódio ou dor
+em momentos de tragédia a solidão te abraçou
+e te ensinou a nunca se apegar
+E tudo isso vai passar…
+
+E tão irônico é engraçado você 
+me diz que estou sempre errado 
+é o meu santíssimo pecado 
+querer estar tão apegado
+
+Eu falo sério eu confesso mais tão certo eu nem queria estar 
+eu falo sério eu confesso 
+Eu não posso, eu não posso, me apegar
+
+solo
+
+Eu falo sério mas tão certo assim tbm não dá
+palavras duras que ninguém consegue escutar
+mais eu escuto e me acostumo a me calar
+quem sabe o silêncio comece a concordar
+
+quem nunca sentiu medo tristeza ódio ou dor
+em momentos de tragédia a solidão te abraçou
+e te ensinou a nunca se apegar
+E tudo isso vai passar…
+
+E tão irônico é engraçado você 
+me diz que estou sempre errado 
+é o meu santíssimo pecado 
+querer estar tão apegado
+
+Eu falo sério eu confesso mais tão certo eu nem queria estar 
+eu falo sério eu confesso 
+Eu não posso, eu não posso, me apegar
+
+Aonde houver medo ali tbm há coragem 
+entres segredos verdades
+Queria tanto te falar
+mas o silêncio esconderá
+
+eu não posso me apegar
+eu não posso me apegar
+eu não posso me apegar
+eu não posso me apegar
+eu não posso me apegar
+eu não posso me apegar
+eu não posso me apegar
+eu não vou me apegar`
+      },
+      {
+        title: "Malandragem",
+        text: `Quem sabe eu ainda sou uma garotinha
+Esperando o ônibus da escola, sozinha
+Cansada com minhas meias três quartos
+Rezando baixo pelos cantos
+Por ser uma menina má
+
+Quem sabe o príncipe virou um chato
+Que vive dando no meu saco
+Quem sabe a vida é não sonhar
+
+Eu só peço a Deus
+Um pouco de malandragem
+Pois sou criança
+E não conheço a verdade
+Eu sou poeta e não aprendi a amar
+Eu sou poeta e não aprendi a amar
+
+Bobeira é não viver a realidade
+E eu ainda tenho uma tarde inteira
+Eu ando nas ruas
+Eu troco um cheque
+Mudo uma planta de lugar
+Dirijo meu carro
+Tomo o meu pileque
+E ainda tenho tempo pra cantar
+
+Eu só peço a Deus
+Um pouco de malandragem
+Pois sou criança
+E não conheço a verdade
+Eu sou poeta e não aprendi a amar
+Eu sou poeta e não aprendi a amar
+
+Eu ando nas ruas
+Eu troco um cheque
+Mudo uma planta de lugar
+Dirijo meu carro
+Tomo o meu pileque
+E ainda tenho tempo pra cantar
+
+Eu só peço a Deus
+Um pouco de malandragem
+Pois sou criança
+E não conheço a verdade
+Eu sou poeta e não aprendi a amar
+Eu sou poeta e não aprendi a amar
+
+Quem sabe eu ainda sou uma garotinha!`
+      },
+      {
+        title: "Wicked Game",
+        text: `The world was on fire and no one could save me but you
+Strange what desire will make foolish people do
+And I never dreamed that I'd meet somebody like you
+And I never dreamed that I'd lose somebody like you
+
+No, I don't wanna fall in love
+No, I don't wanna fall in love
+With you
+With you
+
+What a wicked game to play
+To make me feel this way
+What a wicked thing to do
+To make me dream of you
+What a wicked thing to say
+You never felt that way
+What a wicked thing to do
+To make me dream of you
+
+And I don't wanna fall in love
+No, I don't wanna fall in love
+With you
+With you
+
+World was on fire and no one could save me but you
+Strange what desire will make foolish people do
+And I never dreamed that I'd meet somebody like you
+And I never dreamed that I'd lose somebody like you
+
+No, I don't wanna fall in love
+No, I don't wanna fall in love
+No I
+No I
+
+Nobody loves no one`
+      },
+      {
+        title: "Biological Being",
+        text: `Even if one day we will die
+I know we will die
+the biological being has not yet conquered
+he hasn't reallocated yet
+
+4x: your dreams
+
+Meu suor caindo em vão no chão
+Minha vida desenhada nas mãos
+Meus pulmões exalando fumaça
+Na minha garganta o gosto do álcool
+
+Solo de guitarra:
+
+Breakdown:
+
+Ponte:
+O pátria amada eu calejei minhas mãos
+O pátria amada eu construí a porra desse país
+O pátria amada todo dia meu sangue escorre no chão
+O pátria amada quem é que olha por mim?
+
+4x: your dreams`       
+      },
+      {
+        title: "Creep",
+        text: `
+When you were here before
+Couldn't look you in the eye
+You're just like an angel
+Your skin makes me cry
+
+You float like a feather
+In a beautiful world
+I wish I was special
+You're so fucking special
+
+But I'm a creep
+I'm a weirdo
+What the hell am I doing here?
+I don't belong here
+
+I don't care if it hurts
+I wanna have control
+I want a perfect body
+I want a perfect soul
+
+I want you to notice
+When I'm not around
+You're so fucking special
+I wish I was special
+
+But I'm a creep
+I'm a weirdo
+What the hell am I doing here?
+I don't belong here
+Oh, oh
+
+She's running out the door
+She's running out
+She run, run, run, run
+Run
+
+Whatever makes you happy
+Whatever you want
+You're so fucking special
+I wish I was special
+
+But I'm a creep
+I'm a weirdo
+What the hell am I doing here?
+I don't belong here
+I don't belong here`
+      },
+      {
+        title: "Black",
+        text: `
+Sheets of empty canvas
+Untouched sheets of clay
+Were laid spread out before me
+As her body once did
+
+All five horizons
+Revolved around her soul
+As the earth to the sun
+Now the air I tasted and breathed
+Has taken a turn
+
+Oh, and all I taught her was everything
+Oh, I know she gave me all that she wore
+
+And now my bitter hands
+Chafe beneath the clouds
+Of what was everything
+Oh, the pictures have
+All been washed in black
+Tattooed everything
+
+I take a walk outside
+I'm surrounded by some kids at play
+I can feel their laughter
+So, why do I sear?
+
+Oh, and twisted thoughts that spin round my head
+I'm spinning, oh, I'm spinning
+How quick the sun can drop away?
+
+And now my bitter hands
+Cradle broken glass
+Of what was everything
+All the pictures have
+All been washed in black
+Tattooed everything
+All the love gone bad
+Turned my world to black
+Tattooed all I see
+All that I am
+All that I'll be, yeah
+
+I know someday you'll have a beautiful life
+I know you'll be a star
+In somebody else's sky, but why? Why? Why
+Can't it be, oh, can't it be mine?`
+      },
+      {
+        title: "Wish You Were Here",
+        text: `So, so you think you can tell
+Heaven from hell?
+Blue skies from pain?
+Can you tell a green field
+From a cold steel rail?
+A smile from a veil?
+Do you think you can tell?
+
+Did they get you to trade
+Your heroes for ghosts?
+Hot ashes for trees?
+Hot air for a cool breeze?
+Cold comfort for change?
+Did you exchange
+A walk on part in the war
+For a lead role in a cage?
+
+How I wish
+How I wish you were here
+We're just two lost souls
+Swimming in a fish bowl year after year
+Running over the same old ground
+What have we found?
+The same old fears
+Wish you were here`
+      },
+      {
+        title: "Não Existe Amor Em SP",
+        text: `Não existe amor em SP
+Um labirinto místico
+Onde os grafites gritam
+Não dá pra descrever
+Numa linda frase
+De um postal tão doce
+Cuidado com doce
+São Paulo é um buquê
+Buquês são flores mortas
+Num lindo arranjo
+Arranjo lindo, feito pra você
+
+Não existe amor em SP
+Os bares estão cheios de almas tão vazias
+A ganância vibra, a vaidade excita
+Devolva minha vida e morra
+Afogada em seu próprio mar de féu
+Aqui ninguém vai pro céu
+
+Não precisa morrer pra ver Deus
+Não precisa sofrer pra saber o que é melhor pra você
+Encontro duas nuvens
+Em cada escombro, em cada esquina
+Me dê um gole de vida
+Não precisa morrer pra ver Deus
+
+Não existe amor em SP
+Um labirinto místico
+Onde os grafites gritam
+Não dá pra descrever
+Numa linda frase
+De um postal tão doce
+Cuidado com doce
+São Paulo é um buquê
+Buquês são flores mortas
+Num lindo arranjo
+Arranjo lindo feito pra você
+
+Não existe amor em SP
+Os bares estão cheios de almas tão vazias
+A ganância vibra, a vaidade excita
+Devolva minha vida e morra
+Afogada em seu próprio mar de fel
+Aqui ninguém vai pro céu
+
+Não precisa morrer pra ver Deus
+Não precisa sofrer pra saber o que é melhor pra você
+Encontro duas nuvens
+Em cada escombro, em cada esquina
+Me dê um gole de vida
+Não precisa morrer pra ver Deus`
+      },
+      {
+        title: "Ainda é Cedo",
+        text: `Uma menina me ensinou
+Quase tudo que eu sei
+Era quase escravidão
+Mas ela me tratava como um rei
+
+Ela fazia muitos planos
+Eu só queria estar ali
+Sempre ao lado dela
+Eu não tinha aonde ir
+
+Mas egoísta que eu sou
+Me esqueci de ajudar
+A ela como ela me ajudou
+E não quis me separar
+
+Ela também estava perdida
+E por isso se agarrava a mim também
+E eu me agarrava a ela
+Porque eu não tinha mais ninguém
+
+E eu dizia: Ainda é cedo
+Cedo, cedo, cedo, cedo
+E eu dizia: Ainda é cedo
+Cedo, cedo, cedo, cedo
+Ah, eu dizia: Ainda é cedo
+Cedo, cedo, cedo, cedo
+Ah, eu dizia: Ainda é cedo
+
+Sei que ela terminou
+O que eu não comecei
+E o que ela descobriu
+Eu aprendi também, eu sei
+
+Ela falou: Você tem medo
+Aí eu disse: Quem tem medo é você
+Falamos o que não devia
+Nunca ser dito por ninguém
+
+Ela me disse: Eu não sei
+Mais o que eu sinto por você
+Vamos dar um tempo
+Um dia a gente se vê
+
+E eu dizia: Ainda é cedo
+Cedo, cedo, cedo, cedo
+E eu dizia: Ainda é cedo
+Cedo, cedo, cedo, cedo
+Ah, eu dizia: Ainda é cedo
+Cedo, cedo, cedo, cedo
+Ah, eu dizia: Ainda é cedo`
+      },
+      {
+        title: "Diamante",
+        text: `Foi tanto tempo pra gostar de você,
+Das suas formas e o seu jeito de ser
+Tantas coisas que eu não acreditava
+Uma beleza linda que enfeitava
+
+Suas formas o seu jeito de ver
+Um mundo tão alegre e tão incrível
+Eu não podia mais acreditar
+Que alguém assim também era possível
+
+Eu não não vou voltar a ser
+Como era antes
+O meu coração é diamante
+Minhas emoções indecifráveis
+Meus sinais criptografados
+
+Em um silêncio sem palavras
+Digo palavras complicadas
+Quando dizia que eu gostava
+Na real eu te amava…
+
+Pré ponte:
+E como sempre eu aprendi
+Que a solidão é meu destino
+Melhor viver assim sem ti
+Do que viver mentindo`
+      },
+      {
+        title: "Dualidade",
+        text: `Não esqueci as regras do jogo
+Me sufocando em frente ao espelho
+Eu vejo um homem fraco em desespero
+Quero acordar…
+
+O monstro interior vai despertar
+A fera acorrenta está pra se soltar
+E não há nada que possa me impedir
+Nada vai me parar…
+
+Não escolhi as normas
+Só se fala em formas
+O que não me mata
+Te faz querer morrer…
+
+Queime mais um dia perdeu
+Sufoque mais uma manhã nasceu
+Ou enlouqueça lamentando o dia
+Que não é mais seu …`
+      },
+      {
+        title: "Whisky e Cigarro",
+        text: `Hoje não estou de papo
+Não quero que venha encher o saco
+Vou  acender mais um cigarro
+do meu whisky um trago
+
+Refrão
+Não venha me dizer o que devo fazer
+Se no bar é onde quero estar
+Não venha me envolver no que quer que venha ser
+So vou voltar quando amanhecer
+
+Hoje eu só quero ir pra rua
+Sem lidar com problemas
+Um trago do cigarro
+Um gole do whisky é o lema
+
+Não quero ter que resolver
+Os Problemas do amanhã
+Pois me sinto liberto aqui
+Em meio a todo mundo
+
+Refrão
+Não venha me dizer o que devo fazer
+Se no bar é onde quero estar
+Não venha me envolver no que quer que venha ser
+So vou voltar quando amanhecer, (então vai se foder...)
+
+rap:
+
+E eu não quero saber de responsa
+Hoje se vim problema vou fazer a sonsa
+Pisando na grama roubando essas rosas
+E te mostro o caminho mas não peça resposta
+
+Vamo viver o lema igual rakuna matata
+E se vim esses trouxa é só ratatatáh…
+Estilo robin hood o último bom malandro
+Se essa vida é ringue só pulo com meu bando
+
+Emocionado pra caralho com calor! mas nois faz chover Aqui ou cê atura ou surta, eu boto pra foder
+Ou acompanha o enredo ou fica pra trás
+Do rala to cansado mas baby eu nunca perco o gás.
+
+Refrão:
+Não venha me dizer o que devo fazer
+Se no bar é onde quero estar
+Não venha me envolver no que quer que venha ser
+So vou voltar quando amanhecer`   
+        },  
+        {
+        title: "Pesadelo",
+        text: `Obra inacabada
+Minha casa tá bagunçada
+Eu desço as escadas
+Eu Fico na calçada
+
+Minha vida de pernas pro ar
+Eu não consigo mais respirar
+Faz tanto tempo
+E não sei pra onde caminhar
+
+Eu espero o fim
+Será que é o fim?
+O abismo me chama
+Ele preparou
+minha cama
+posso descansar
+Espero o fim
+Eu espero o fim
+
+Nada faz sentido
+O futuro não é meu amigo
+Eu procuro um abrigo
+Quero descansar
+
+Isso não vai parar
+Eu sei que eu preciso continuar
+Até aonde caminhar?
+Isso não vai parar?
+
+Eu espero o fim
+Será que é o fim?
+O abismo me chama
+Ele preparou
+minha cama
+posso descansar`   
+        },  
+        {
+        title: "Sweet Dreams",
+        text: `Sweet dreams are made of these
+Who am I to disagree?
+Travel the world and the seven seas
+Everybody's looking for something
+
+Some of them want to use you
+Some of them wanna get used by you
+Some of them want to abuse you
+Some of them want to be abused
+
+Sweet dreams are made of these
+Who am I to disagree?
+Travel the world and the seven seas
+Everybody's looking for something
+
+Some of them want to use you
+Some of them wanna get used by you
+Some of them want to abuse you
+Some of them want to be abused, yeah
+
+(I wanna use you)
+(And abuse you)
+(I wanna know what's inside you)
+
+Movin' on (hold your head up)
+Movin' on (keep your head up)
+Movin' on (hold your head up)
+Movin' on (keep your head up)
+Movin' on (hold your head up)
+Movin' on (keep your head up)
+Movin' on!
+
+Sweet dreams are made of these
+Who am I to disagree?
+Travel the world and the seven seas
+Everybody's looking for something
+
+Some of them want to use you
+Some of them wanna get used by you
+Some of them want to abuse you
+Some of them want to be abused
+
+I'm gonna use you and abuse you
+I've gotta know what's inside
+I'm gonna use you and abuse you
+I've gotta know what's inside you`},
+        {
+        title: "Sujeito De Sorte",
+        text: `Presentemente, eu posso me
+Considerar um sujeito de sorte
+Porque apesar de muito moço
+Me sinto são, e salvo, e forte
+E tenho comigo pensado
+Deus é brasileiro e anda do meu lado
+E assim já não posso sofrer no ano passado
+
+Tenho sangrado demais
+Tenho chorado pra cachorro
+Ano passado eu morri
+Mas esse ano eu não morro
+Tenho sangrado demais
+Tenho chorado pra cachorro
+Ano passado eu morri
+Mas esse ano eu não morro
+
+Ano passado eu morri
+Mas esse ano eu não morro
+Ano passado eu morri
+Mas esse ano eu não morro
+
+Presentemente, eu posso me
+Considerar um sujeito de sorte
+Porque apesar de muito moço
+Me sinto são, e salvo, e forte
+E tenho comigo pensado
+Deus é brasileiro e anda do meu lado
+E assim já não posso sofrer no ano passado
+
+Tenho sangrado demais
+Tenho chorado pra cachorro
+Ano passado eu morri
+Mas esse ano eu não morro
+Tenho sangrado demais
+Tenho chorado pra cachorro
+Ano passado eu morri
+Mas esse ano eu não morro
+
+Ano passado eu morri
+Mas esse ano eu não morro
+Ano passado eu morri
+Mas esse ano eu não morro
+
+Presentemente, eu posso me
+Considerar um sujeito de sorte
+Porque apesar de muito moço
+Me sinto são, e salvo, e forte
+E tenho comigo pensado
+Deus é brasileiro e anda do meu lado
+E assim já não posso sofrer no ano passado
+
+Tenho sangrado demais
+Tenho chorado pra cachorro
+Ano passado eu morri
+Mas esse ano eu não morro
+Tenho sangrado demais
+Tenho chorado pra cachorro
+Ano passado eu morri
+Mas esse ano eu não morro
+
+Ano passado eu morri
+Mas esse ano eu não morro
+Ano passado eu morri
+Mas esse ano eu não morro`},
+        {
+        title: "O Sol",
+        text: `Ei, dor, eu não te escuto mais
+Você não me leva a nada
+Ei, medo, eu não te escuto mais
+Você não me leva a nada
+
+E se quiser saber pra onde eu vou
+Pra onde tenha Sol
+É pra lá que eu vou
+
+E se quiser saber pra onde eu vou
+Pra onde tenha Sol
+É pra lá que eu vou
+
+Ei, dor eu não te escuto mais
+Você não me leva a nada
+Ei, medo eu não te escuto mais
+Você não me leva a nada
+
+E se quiser saber pra onde eu vou
+Pra onde tenha Sol
+É pra lá que eu vou
+É pra lá que eu vou
+
+E se quiser saber pra onde eu vou
+Pra onde tenha Sol
+É pra lá que eu vou
+
+Yeah Han
+Caminho do Sol, é
+Lá lararará
+Caminho do Sol, é
+
+E se quiser saber pra onde eu vou
+Pra onde tenha Sol
+É pra lá que eu vou
+
+E se quiser saber pra onde eu vou
+Pra onde tenha Sol
+É pra lá que eu vou, é pra lá que eu vou
+
+Lá lararará, lararará
+É pra lá
+É pra lá que eu vou
+Lá lararará, lararará
+Aonde eu vou
+Aonde tenha Sol
+É pra lá que eu vou
+Lá lararará, lararará
+É pra lá
+É pra lá que eu vou
+Lá lararará, lararará
+É pra lá que eu vou
+É pra lá que eu vou
+Lá lararará, lararará`
+    },
+    {
+        title: "Smells Like Teen Spirit",
+        text: `Load up on guns, bring your friends
+It's fun to lose and to pretend
+She's over-bored and self-assured
+Oh, no, I know a dirty word
+
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello
+
+With the lights out
+It's less dangerous
+Here we are now, entertain us
+I feel stupid and contagious
+Here we are now, entertain us
+A mulatto, an albino
+A mosquito, my libido
+Yeah, hey, yay
+
+I'm worse at what I do best
+And for this gift I feel blessed
+Our little group has always been
+And always will until the end
+
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello
+
+With the lights out
+It's less dangerous
+Here we are now, entertain us
+I feel stupid and contagious
+Here we are now, entertain us
+A mulatto, an albino
+A mosquito, my libido
+Yeah, hey, yay
+
+And I forget just why I taste
+Oh, yeah, I guess it makes me smile
+I found it hard, it's hard to find
+Well, whatever, nevermind
+
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello
+
+With the lights out
+It's less dangerous
+Here we are now, entertain us
+I feel stupid and contagious
+Here we are now, entertain us
+A mulatto, an albino
+A mosquito, my libido
+
+A denial, a denial, a denial
+A denial, a denial, a denial
+A denial, a denial, a denial`
+    },
+    {
+        title: "Que País É Este",
+        text: `Nas favelas, no Senado
+Sujeira pra todo lado
+Ninguém respeita a Constituição
+Mas todos acreditam no futuro da nação
+
+Que país é esse?
+Que país é esse?
+Que país é esse?
+
+No Amazonas, no Araguaia-ia-ia
+Na Baixada Fluminense
+Mato Grosso, Minas Gerais
+E no Nordeste tudo em paz
+
+Na morte, eu descanso
+Mas o sangue anda solto
+Manchando os papéis
+Documentos fiéis
+Ao descanso do patrão
+
+Que país é esse?
+Que país é esse?
+Que país é esse?
+Que país é esse?
+
+Terceiro mundo se for
+Piada no exterior
+
+Mas o Brasil vai ficar rico
+Vamos faturar um milhão
+Quando vendermos todas as almas
+Dos nossos índios num leilão
+
+Que país é esse?
+Que país é esse?
+Que país é esse?
+Que país é esse?`}
+    ];
+
+    let currentFlagIndex = 0;
+
+    function initializeFlags() {
+      const flagsGrid = document.getElementById('flagsGrid');
+      flags.forEach((flag, index) => {
+        const card = document.createElement('div');
+        card.className = 'flag-card';
+        card.innerHTML = `<h3>${flag.title}</h3><p>${flag.text.substring(0, 100)}...</p>`;
+        card.onclick = () => openFlag(index);
+        flagsGrid.appendChild(card);
+      });
+    }
+
+    function openFlag(index) {
+      currentFlagIndex = index;
+      const flag = flags[index];
+      document.getElementById('modalTitle').textContent = flag.title;
+      document.getElementById('modalText').textContent = flag.text;
+      document.getElementById('flagCounter').textContent = `${index + 1} de ${flags.length}`;
+      
+      updateNavButtons();
+      document.getElementById('overlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFlag() {
+      document.getElementById('overlay').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function nextFlag() {
+      if (currentFlagIndex < flags.length - 1) {
+        openFlag(currentFlagIndex + 1);
+      }
+    }
+
+    function previousFlag() {
+      if (currentFlagIndex > 0) {
+        openFlag(currentFlagIndex - 1);
+      }
+    }
+
+    function updateNavButtons() {
+      document.getElementById('prevBtn').disabled = currentFlagIndex === 0;
+      document.getElementById('nextBtn').disabled = currentFlagIndex === flags.length - 1;
+    }
+
+    // Navegação por teclado
+    document.addEventListener('keydown', (e) => {
+      const overlay = document.getElementById('overlay');
+      if (!overlay.classList.contains('active')) return;
+
+      if (e.key === 'ArrowLeft') previousFlag();
+      if (e.key === 'ArrowRight') nextFlag();
+      if (e.key === 'Escape') closeFlag();
+    });
+
+    // Fechar ao clicar fora do conteúdo
+    document.getElementById('overlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('overlay')) {
+        closeFlag();
+      }
+    });
+
+    // Inicializar
+    initializeFlags();
+  </script>
+</body>
+</html>
